@@ -1,0 +1,23 @@
+{
+    "name": "Cinema",
+    "label": "Cinema",
+    "alias": "cinema",
+    "description": "manage all cinema",
+    "keywords": ["cinema"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Cinema\\Providers\\CinemaServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": [],
+    "menus": [
+        {
+            "icon": "fas fa-circle",
+            "name": "Cinema",
+            "route": "cinema.index",
+            "permission": "read cinema"
+        }
+    ],
+    "permissions": ["cinema"]
+}

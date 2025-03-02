@@ -1,0 +1,23 @@
+{
+    "name": "CinemaType",
+    "label": "CinemaType",
+    "alias": "cinematype",
+    "description": "manage all cinematype",
+    "keywords": ["cinematype"],
+    "priority": 0,
+    "providers": [
+        "Modules\\CinemaType\\Providers\\CinemaTypeServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": [],
+    "menus": [
+        {
+            "icon": "fas fa-circle",
+            "name": "CinemaType",
+            "route": "cinematype.index",
+            "permission": "read cinematype"
+        }
+    ],
+    "permissions": ["cinematype"]
+}
