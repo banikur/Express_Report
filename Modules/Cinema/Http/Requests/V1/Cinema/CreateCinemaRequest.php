@@ -9,7 +9,10 @@ class CreateCinemaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required'
+            'name' => 'required',
+            'location_id' => 'required',
+            'cinema_type' => 'required',
+            'total_studio' => 'required|integer|min:1',
         ];
     }
 }
