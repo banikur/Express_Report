@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <style>
         /* Menyamakan tinggi Select2 dengan Bootstrap */
         .select2-container .select2-selection--single {
@@ -50,6 +52,11 @@
         .select2-dropdown {
             border: 1px solid #ced4da;
             border-radius: 0.25rem;
+        }
+
+        .modal-xxl {
+            max-width: 95vw;
+            width: 95%;
         }
     </style>
     @stack('style')

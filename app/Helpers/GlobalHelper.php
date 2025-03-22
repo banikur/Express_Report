@@ -37,7 +37,6 @@ class GlobalHelper
             return 'Tidak Ditemukan';
         }
     }
-
     function ProvinceCode($name)
     {
         try {
@@ -47,7 +46,6 @@ class GlobalHelper
             return 'Tidak Ditemukan';
         }
     }
-
     function CityCode($name)
     {
         try {
@@ -57,7 +55,6 @@ class GlobalHelper
             return 'Tidak Ditemukan';
         }
     }
-
     function cinemaTypeId($name)
     {
         try {
@@ -67,4 +64,5 @@ class GlobalHelper
             return 'Tidak Ditemukan';
         }
     }
+    
 }

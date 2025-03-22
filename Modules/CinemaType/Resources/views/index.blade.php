@@ -40,7 +40,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Updated</th>
+                                            <th>Logo</th>
+                                            <!-- <th>Updated</th> -->
                                             @canany(['update cinematype', 'delete cinematype'])
                                                 <th>Action</th>
                                             @endcanany
@@ -51,7 +52,8 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $i->name }}</td>
-                                                <td>{{ $i->updated_at }}</td>
+                                                <td> <img src="{{ asset('storage/' . $i->logo) }}" alt="Logo" width="50"></td>
+                                                <!-- <td>{{ $i->updated_at }}</td> -->
                                             @canany(['update cinematype', 'delete cinematype'])
                                                     <td>
                                                         <div class="btn-group">
@@ -140,6 +142,15 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="input-group">
+                            <label>Name</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control @error('logo') is-invalid @enderror" placeholder="logo" name="logo" value="{{ old('logo') }}">
+                                @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -169,6 +180,15 @@
                             <label>Name</label>
                             <div class="input-group">
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Name" name="name" id="name" value="{{ old('name') }}">
+                                @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Name</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control @error('logo') is-invalid @enderror" placeholder="logo" name="logo" value="{{ old('logo') }}">
                                 @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

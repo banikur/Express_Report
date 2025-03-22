@@ -11,9 +11,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Modules\CinemaType\Models\CinemaType;
 use Illuminate\Support\Facades\DB;
 use App\Models\Province;
+use App\Models\City;
 use Modules\Cinema\Models\CinemaDetail;
 use League\Csv\Reader;
-use App\Helpers\GlobalHelper;
+
+
+use Maatwebsite\Excel\Facades\Excel;
+
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class CinemaController extends Controller
 {
@@ -24,7 +29,6 @@ class CinemaController extends Controller
             ->with('details')
             ->with('Province')
             ->with('City')->get();
-        // dd($x);
         $x['location'] = Province::with('City')->get();
         $x['cinema_type'] = CinemaType::get();
 
@@ -109,28 +113,75 @@ class CinemaController extends Controller
 
     public function preview(Request $request)
     {
-        $file = $request->file('file');
-        if (!$file->isValid()) {
-            return response()->json(['error' => 'File tidak valid!'], 400);
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx,xls|max:2048'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 400);
         }
 
-        $csv = Reader::createFromPath($file->getPathname(), 'r');
-        $csv->setHeaderOffset(0); // Baris pertama sebagai header
+        try {
+            $file = $request->file('file');
+            $spreadsheet = IOFactory::load($file->getPathname());
+            $sheet = $spreadsheet->getActiveSheet();
+            $rows = $sheet->toArray(null, true, true, true); // Konversi ke array
 
-        $data = [];
-        foreach ($csv as $row) {
-            $data[] = [
-                'name' => $row['name'],
-                'city_code' => CityName($row['city_code']),
-                'province_code' => ProvinceName($row['province_code']),
-                'cinema_type' => cinemaTypeName($row['cinema_type']),
-                'studio_number' => $row['studio_number'],
-                'normal_price' => number_format(str_replace(',', '', $row['normal_price']), 0, ',', '.'),
-                'weekend_price' => number_format(str_replace(',', '', $row['weekend_price']), 0, ',', '.'),
-                'holiday_price' => number_format(str_replace(',', '', $row['holiday_price']), 0, ',', '.'),
-            ];
+            // Ambil header dari baris pertama (jika tidak dipakai, bisa dihapus)
+            array_shift($rows);
+
+            $data = [];
+            foreach ($rows as $row) {
+                $data[] = [
+                    'name'          => $row['B'],
+                    'city_code'     => $this->CityCode($row['C']),
+                    'province_code' =>  $this->ProvinceCode($row['D']),
+                    'cinema_type'   =>  $this->cinemaTypeId($row['E']),
+                    'studio_number' => $row['F'],
+                    'normal_price'  => number_format(str_replace(',', '', $row['G']), 0, ',', '.'),
+                    'holiday_price' => number_format(str_replace(',', '', $row['H']), 0, ',', '.'),
+                    'weekend_price' => number_format(str_replace(',', '', $row['I']), 0, ',', '.'),
+                ];
+            }
+            $names = array_column($data, 'name');
+            $duplicateNames = array_filter(array_count_values($names), fn($count) => $count > 1);
+
+            // Hapus duplikasi berdasarkan seluruh kolom
+            $uniqueData = array_map('unserialize', array_unique(array_map('serialize', $data)));
+            Alert::success('Pemberitahuan', 'Data <b>' . $file->getFilename() . '</b> berhasil dibuat')->toToast()->toHtml();
+            return response()->json(['success' => true, 'data' => $uniqueData]);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => 'Terjadi kesalahan: ' . $th->getMessage()], 500);
         }
+    }
 
-        return response()->json(['data' => $data]);
+    private function ProvinceCode($name)
+    {
+        try {
+            $data = Province::where('name', 'like', '%' . $name . '%')->first();
+            return !empty($data) ? $data->code : 'Tidak Ditemukan';
+        } catch (\Throwable $th) {
+            return 'Tidak Ditemukan';
+        }
+    }
+
+    private function CityCode($name)
+    {
+        try {
+            $data = City::where('name',  'like', '%' . $name . '%')->first();
+            return !empty($data) ? $data->code : 'Tidak Ditemukan';
+        } catch (\Throwable $th) {
+            return 'Tidak Ditemukan';
+        }
+    }
+
+    private function cinemaTypeId($name)
+    {
+        try {
+            $data = CinemaType::where('name', 'like', '%' . $name . '%')->first();
+            return !empty($data) ? $data->id : 'Tidak Ditemukan';
+        } catch (\Throwable $th) {
+            return 'Tidak Ditemukan';
+        }
     }
 }

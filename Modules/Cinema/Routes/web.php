@@ -12,6 +12,6 @@ Route::middleware('auth')->prefix('admin/cinema')->group(function() {
         Route::put('/', 'update')->middleware(['permisson:update cinema'])->name('cinema.update');
         Route::delete('/', 'destroy')->middleware(['permisson:delete cinema'])->name('cinema.destroy');
         Route::post('/import', 'import')->middleware(['permisson:import cinema'])->name('cinema.import');
-        Route::post('/preview', 'preview')->middleware(['permisson:import cinema'])->name('cinema.preview');
+        Route::post('/preview', 'preview')->middleware(['permisson:preview cinema'])->name('cinema.preview');
     });
 });

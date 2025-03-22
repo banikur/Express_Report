@@ -316,10 +316,10 @@
 </div>
 
 <div class="modal fade" id="modal-import">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-xxl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Hapus Data</h4>
+                <h4 class="modal-title">Import Data</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -330,7 +330,7 @@
                     <div class="input-group">
                         <label>File</label>
                         <div class="input-group">
-                            <input type="file" name="file" id="import-file" accept=".xlsx, .csv" class="input-group"><br />
+                            <input type="file" name="file" id="import-file" accept=".xlsx" class="input-group"><br />
                         </div>
                         <small>Ketentuan import data ada disini, <a href="contoh.pdf" target="download">disini</a></small>
                     </div>
@@ -339,7 +339,7 @@
                     <br />
                     <hr />
                     <br />
-                    <table class="table" style="width: 100%;">
+                    <table id="preview-table" class="table" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -352,7 +352,7 @@
                                 <th>Holiday Price</th>
                             </tr>
                         </thead>
-                        <tbody id="preview-table"></tbody>
+                        <tbody></tbody>
                     </table>
             </div>
             <div class="modal-footer justify-content-between">
@@ -491,9 +491,14 @@
     });
 </script>
 <script>
+    $(document).ready(function() {
+        
+    });
     $("#btn-preview").click(function() {
         let fileInput = $("#import-file")[0];
-
+        let kotaOptions = {!! json_encode($location->flatMap->City) !!};
+        let provinsiOptions = {!! json_encode($location) !!};
+        let cinemaBrandOptions = {!! json_encode($cinema_type) !!};
         if (!fileInput || !fileInput.files.length) {
             alert("Pilih file terlebih dahulu!");
             return;
@@ -503,34 +508,65 @@
         formData.append("file", fileInput.files[0]);
 
         $.ajax({
-            url: "admin/cinema/preview",
+            url: "cinema/preview",
             type: "POST",
             data: formData,
-            processData: false,
-            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            processData: false, // Tambahkan ini
+            contentType: false, // Tambahkan ini
             success: function(response) {
+                console.log("Response dari server:", response);
+
                 if (response.success) {
                     let tableBody = $("#preview-table tbody");
                     tableBody.empty();
+
                     response.data.forEach((row, index) => {
+                        let citySelect = row.city_code === "Tidak Ditemukan" ? `
+                            <select class="form-control">
+                                <option value="">Pilih Kota</option>
+                                ${kotaOptions.map(k => `<option value="${k.id}">${k.name}</option>`).join('')}
+                            </select>` :
+                            row.city_code;
+
+                        let provinceSelect = row.province_code === "Tidak Ditemukan" ? `
+                            <select class="form-control">
+                                <option value="">Pilih Provinsi</option>
+                                ${provinsiOptions.map(p => `<option value="${p.id}">${p.name}</option>`).join('')}
+                            </select>` :
+                            row.province_code;
+
+                        let cinemaBrandSelect = row.cinema_brand === "Tidak Ditemukan" ? `
+                            <select class="form-control">
+                                <option value="">Pilih Brand</option>
+                                ${cinemaBrandOptions.map(cb => `<option value="${cb.id}">${cb.name}</option>`).join('')}
+                            </select>` :
+                            row.cinema_brand;
+
                         if (index === 0) return;
                         tableBody.append(`
                         <tr>
-                            <td>${index}</td>
-                            <td>${row[1]}</td>
-                            <td>${row[2]}</td>
-                            <td>${row[3]}</td>
-                            <td>${row[4]}</td>
-                            <td>${row[5]}</td>
-                            <td>${row[6]}</td>
-                            <td>${row[7]}</td>
+                            <td>${row.name}</td>
+                            <td>${row.city_code === "Tidak Ditemukan" ? citySelect: row.city_code}</td>
+                            <td>${row.province_code === "Tidak Ditemukan" ? provinceSelect : row.province_code}</td>
+                            <td>${row.cinema_type === "Tidak Ditemukan" ? cinemaBrandSelect : row.cinema_type}</td>
+                            <td>${row.studio_number}</td>
+                            <td>${row.normal_price}</td>
+                            <td>${row.holiday_price}</td>
+                            <td>${row.weekend_price}</td>
                         </tr>
-                    `);
+                        `);
                     });
+
                     $("#btn-import-confirm").show();
                 }
             }
+
         });
+
+
     });
 </script>
 @endsection

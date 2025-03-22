@@ -11,6 +11,7 @@ class CreateCinemaTypeTable extends Migration
         Schema::create('cinema_type', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('logo');
             $table->timestamps();
         });
     }
