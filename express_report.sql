@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 10/03/2025 04:46:37
+ Date: 24/03/2025 03:18:10
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,7 @@ CREATE TABLE `cinema`  (
   `updated_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 83 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cinema
@@ -39,6 +39,19 @@ CREATE TABLE `cinema`  (
 INSERT INTO `cinema` VALUES (3, 'CGV Dmall', 32, 76, NULL, '2025-03-08 14:52:33', '2025-03-08 14:53:42', '2025-03-08 14:53:42');
 INSERT INTO `cinema` VALUES (4, 'CGV Dmall', 32, 76, 1, '2025-03-08 14:54:26', '2025-03-08 14:56:44', '2025-03-08 14:56:44');
 INSERT INTO `cinema` VALUES (5, 'CGV Dmall', 32, 76, 1, '2025-03-08 14:57:07', '2025-03-08 14:57:07', NULL);
+INSERT INTO `cinema` VALUES (6, 'CGV AEON Tanjung Barat', 31, 75, 1, '2025-03-24 00:01:52', '2025-03-24 00:01:52', NULL);
+INSERT INTO `cinema` VALUES (71, 'Cinepolis – Senayan Park', 31, 71, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema` VALUES (72, 'Cinepolis - Metro Kebayoran', 31, 74, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema` VALUES (73, 'Cinepolis - Pejaten Village', 31, 74, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema` VALUES (74, 'Cinepolis - Kalibata City', 31, 74, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema` VALUES (75, 'Cinepolis - Tamini Square', 31, 74, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema` VALUES (76, 'Cinepolis - Cibubur Junction', 31, 74, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema` VALUES (77, 'Cinepolis - Depok Town Square', 32, 76, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema` VALUES (78, 'Cinepolis - Gajah Mada Plaza', 31, 71, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema` VALUES (79, 'Cinepolis - Mangga Dua Square', 31, 72, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema` VALUES (80, 'Cinepolis - Pluit Village', 31, 72, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema` VALUES (81, 'Cinepolis - Pondok Kelapa Town Square', 31, 72, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema` VALUES (82, 'Cinepolis - Blu Plaza Bekasi', 32, 75, 2, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
 
 -- ----------------------------
 -- Table structure for cinema_detail
@@ -49,19 +62,69 @@ CREATE TABLE `cinema_detail`  (
   `cinema_id` int NOT NULL,
   `studio_number` int NOT NULL,
   `normal_price` decimal(10, 2) NOT NULL,
-  `weekend_price` decimal(10, 2) NULL DEFAULT NULL,
   `holiday_price` decimal(10, 2) NULL DEFAULT NULL,
   `created_at` datetime NULL DEFAULT NULL,
   `updated_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 246 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cinema_detail
 -- ----------------------------
-INSERT INTO `cinema_detail` VALUES (1, 5, 1, 40000.00, 40000.00, 40000.00, '2025-03-08 14:57:07', '2025-03-08 14:57:07', NULL);
-INSERT INTO `cinema_detail` VALUES (2, 5, 2, 40000.00, 40000.00, 40000.00, '2025-03-08 14:57:07', '2025-03-08 14:57:07', NULL);
+INSERT INTO `cinema_detail` VALUES (1, 5, 1, 40000.00, 40000.00, '2025-03-08 14:57:07', '2025-03-08 14:57:07', NULL);
+INSERT INTO `cinema_detail` VALUES (2, 5, 2, 40000.00, 40000.00, '2025-03-08 14:57:07', '2025-03-08 14:57:07', NULL);
+INSERT INTO `cinema_detail` VALUES (3, 6, 1, 40000.00, 55000.00, '2025-03-24 00:01:52', '2025-03-24 00:01:52', NULL);
+INSERT INTO `cinema_detail` VALUES (4, 6, 2, 40000.00, 55000.00, '2025-03-24 00:01:52', '2025-03-24 00:01:52', NULL);
+INSERT INTO `cinema_detail` VALUES (5, 6, 3, 50000.00, 60000.00, '2025-03-24 00:01:52', '2025-03-24 00:01:52', NULL);
+INSERT INTO `cinema_detail` VALUES (198, 71, 1, 50000.00, 60000.00, '2025-03-24 02:43:19', '2025-03-24 03:02:20', NULL);
+INSERT INTO `cinema_detail` VALUES (199, 71, 2, 50000.00, 60000.00, '2025-03-24 02:43:19', '2025-03-24 03:02:20', NULL);
+INSERT INTO `cinema_detail` VALUES (200, 71, 3, 50000.00, 60000.00, '2025-03-24 02:43:19', '2025-03-24 03:02:20', NULL);
+INSERT INTO `cinema_detail` VALUES (201, 71, 4, 50000.00, 60000.00, '2025-03-24 02:43:19', '2025-03-24 03:02:20', NULL);
+INSERT INTO `cinema_detail` VALUES (202, 72, 1, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (203, 72, 2, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (204, 72, 3, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (205, 72, 4, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (206, 73, 1, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (207, 73, 2, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (208, 73, 3, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (209, 73, 4, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (210, 74, 1, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (211, 74, 2, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (212, 74, 3, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (213, 74, 4, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (214, 75, 1, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (215, 75, 2, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (216, 75, 3, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (217, 75, 4, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (218, 76, 1, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (219, 76, 2, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (220, 76, 3, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (221, 76, 4, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (222, 77, 1, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (223, 77, 2, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (224, 77, 3, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (225, 77, 4, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (226, 78, 1, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (227, 78, 2, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (228, 78, 3, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (229, 78, 4, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (230, 79, 1, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (231, 79, 2, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (232, 79, 3, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (233, 79, 4, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (234, 80, 1, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (235, 80, 2, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (236, 80, 3, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (237, 80, 4, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (238, 81, 1, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (239, 81, 2, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (240, 81, 3, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (241, 81, 4, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (242, 82, 1, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (243, 82, 2, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (244, 82, 3, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
+INSERT INTO `cinema_detail` VALUES (245, 82, 4, 40.00, 45.00, '2025-03-24 02:43:19', '2025-03-24 02:43:19', NULL);
 
 -- ----------------------------
 -- Table structure for cinema_type
@@ -70,22 +133,24 @@ DROP TABLE IF EXISTS `cinema_type`;
 CREATE TABLE `cinema_type`  (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `logo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cinema_type
 -- ----------------------------
-INSERT INTO `cinema_type` VALUES (1, 'CGV CINEMAS', '2025-03-02 21:46:30', '2025-03-02 21:46:59');
-INSERT INTO `cinema_type` VALUES (2, 'CINEPOLIS CINEMA', '2025-03-02 21:47:16', '2025-03-02 21:47:16');
-INSERT INTO `cinema_type` VALUES (3, 'PLATINUM CINEMA', '2025-03-02 21:47:32', '2025-03-02 21:47:32');
-INSERT INTO `cinema_type` VALUES (4, 'KOTA CINEMA', '2025-03-02 21:47:44', '2025-03-02 21:47:44');
-INSERT INTO `cinema_type` VALUES (5, 'FLIX CINEMA', '2025-03-02 21:47:53', '2025-03-02 21:47:53');
-INSERT INTO `cinema_type` VALUES (6, 'NEWSTAR CINEMA', '2025-03-02 21:48:04', '2025-03-02 21:48:04');
-INSERT INTO `cinema_type` VALUES (7, 'MOVIMAX / MOPIC', '2025-03-02 21:48:26', '2025-03-02 21:48:26');
-INSERT INTO `cinema_type` VALUES (8, 'Lain-Lain', '2025-03-02 21:51:20', '2025-03-02 21:51:20');
+INSERT INTO `cinema_type` VALUES (1, 'CGV CINEMAS', 'logos/tlg1peSj2dNjpIgLsV1r3mR8DoWfLcbJDM8OJ5F9.png', '2025-03-02 21:46:30', '2025-03-22 04:59:40', NULL);
+INSERT INTO `cinema_type` VALUES (2, 'CINEPOLIS CINEMA', NULL, '2025-03-02 21:47:16', '2025-03-02 21:47:16', NULL);
+INSERT INTO `cinema_type` VALUES (3, 'PLATINUM CINEMA', NULL, '2025-03-02 21:47:32', '2025-03-02 21:47:32', NULL);
+INSERT INTO `cinema_type` VALUES (4, 'KOTA CINEMA', NULL, '2025-03-02 21:47:44', '2025-03-02 21:47:44', NULL);
+INSERT INTO `cinema_type` VALUES (5, 'FLIX CINEMA', NULL, '2025-03-02 21:47:53', '2025-03-02 21:47:53', NULL);
+INSERT INTO `cinema_type` VALUES (6, 'NEWSTAR CINEMA', NULL, '2025-03-02 21:48:04', '2025-03-02 21:48:04', NULL);
+INSERT INTO `cinema_type` VALUES (7, 'MOVIMAX / MOPIC', NULL, '2025-03-02 21:48:26', '2025-03-02 21:48:26', NULL);
+INSERT INTO `cinema_type` VALUES (8, 'Lain-Lain', NULL, '2025-03-02 21:51:20', '2025-03-02 21:51:20', NULL);
 
 -- ----------------------------
 -- Table structure for failed_jobs
@@ -777,7 +842,7 @@ CREATE TABLE `permissions`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `permissions_name_guard_name_unique`(`name` ASC, `guard_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permissions
@@ -804,6 +869,11 @@ INSERT INTO `permissions` VALUES (19, 'delete cinematype', 'web', '2025-03-02 18
 INSERT INTO `permissions` VALUES (20, 'update cinematype', 'web', '2025-03-02 18:53:59', '2025-03-02 18:53:59');
 INSERT INTO `permissions` VALUES (21, 'read cinematype', 'web', '2025-03-02 18:53:59', '2025-03-02 18:53:59');
 INSERT INTO `permissions` VALUES (22, 'create cinematype', 'web', '2025-03-02 18:53:59', '2025-03-02 18:53:59');
+INSERT INTO `permissions` VALUES (23, 'delete cinema', 'web', '2025-03-22 00:47:20', '2025-03-22 00:47:20');
+INSERT INTO `permissions` VALUES (24, 'update cinema', 'web', '2025-03-22 00:47:20', '2025-03-22 00:47:20');
+INSERT INTO `permissions` VALUES (25, 'read cinema', 'web', '2025-03-22 00:47:20', '2025-03-22 00:47:20');
+INSERT INTO `permissions` VALUES (26, 'create cinema', 'web', '2025-03-22 00:47:20', '2025-03-22 00:47:20');
+INSERT INTO `permissions` VALUES (27, 'preview cinema', 'web', '2025-03-22 05:07:14', NULL);
 
 -- ----------------------------
 -- Table structure for personal_access_tokens
@@ -914,7 +984,7 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'Superadmin', 'superadmin@superadmin.com', NULL, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '7Y5sHIFEb5NgwaZiBdyJ6LdN9YEr8NduQBoMabiS50vAtSNnpFaoC0C03GHX', '2025-03-02 18:48:04', '2025-03-02 18:48:04');
+INSERT INTO `users` VALUES (1, 'Superadmin', 'superadmin@superadmin.com', NULL, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'coZJXGtFkfoNPwsOlKfBnq1I2rt6kbTsRjfO9iDldm0GtdjwDEU0AnzYQtht', '2025-03-02 18:48:04', '2025-03-02 18:48:04');
 INSERT INTO `users` VALUES (2, 'Admin', 'admin@admin.com', NULL, '$2y$10$2G3TXDWj/AIEyzoJkf5FQO4Uk73Q2gzdWuAEIBqwP.gCWE3QhqDue', NULL, '2025-03-02 18:48:04', '2025-03-02 18:48:04');
 INSERT INTO `users` VALUES (3, 'Operator', 'operator@operator.com', NULL, '$2y$10$qI046.XgZ/gJJJ9Uvah3uen6Rv1dFLkqOZOB8NNi3DRD55.051x4W', NULL, '2025-03-02 18:48:04', '2025-03-02 18:48:04');
 
