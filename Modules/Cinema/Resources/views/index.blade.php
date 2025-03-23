@@ -91,7 +91,7 @@
 @section('modal')
 {{-- Modal tambah --}}
 <div class="modal fade" id="modal-tambah">
-    <div class="modal-dialog modal-xl modal-dialog-centered  modal-dialog-scrollable">
+    <div class="modal-dialog modal-xxl  modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Tambah Data</h4>
@@ -169,7 +169,6 @@
                                     <tr>
                                         <th>Studio</th>
                                         <th>Normal Price</th>
-                                        <th>Weekend Price</th>
                                         <th>Holiday Price</th>
                                     </tr>
                                 </thead>
@@ -190,7 +189,7 @@
 </div>
 {{-- Modal Update --}}
 <div class="modal fade" id="modal-edit">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-xxl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Edit Data</h4>
@@ -267,7 +266,6 @@
                                     <tr>
                                         <th>Studio</th>
                                         <th>Normal Price</th>
-                                        <th>Weekend Price</th>
                                         <th>Holiday Price</th>
                                     </tr>
                                 </thead>
@@ -316,7 +314,7 @@
 </div>
 
 <div class="modal fade" id="modal-import">
-    <div class="modal-dialog modal-xxl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-xxl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Import Data</h4>
@@ -348,7 +346,6 @@
                                 <th>Cinema Type</th>
                                 <th>Studio Number</th>
                                 <th>Normal Price</th>
-                                <th>Weekend Price</th>
                                 <th>Holiday Price</th>
                             </tr>
                         </thead>
@@ -357,7 +354,7 @@
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                <button type="submit" class="btn btn-primary">Import</button>
+                <button type="button" id="btn-import-confirm" class="btn btn-primary">Import</button>
             </div>
             </form>
         </div>
@@ -392,37 +389,39 @@
                     let data = response.data;
                     let details = response.data.details; // Data detail studio
                     let region = data.province_code + '' + data.city_code;
-
+                    console.log(data);
                     // Isi form di modal edit
                     $("#modal-edit #id").val(data.id);
                     $("#modal-edit input[name='name']").val(data.name);
                     $("#modal-edit select[name='id_location']").val(region).trigger("change");
                     $("#modal-edit select[name='cinema_type']").val(data.cinema_type_id).trigger("change");
+                    $("#modal-edit select[name='total_studio']").val(data.total_studio).trigger("change");
                     // Kosongkan tabel sebelum diisi ulang
                     $("#cinema-edit-container").empty();
 
-                    // Loop untuk mengisi data cinema_detail berdasarkan jumlah studio
                     details.forEach((detail, index) => {
                         $("#cinema-edit-container").append(`
-                    <tr>
-                        <td>
-                            <input type="number" name="cinema_details[${index}][studio_number]" 
-                                value="${detail.studio_number}" class="form-control" readonly>
-                        </td>
-                        <td>
-                            <input type="text" name="cinema_details[${index}][normal_price]" 
-                                value="${formatRupiah(detail.normal_price)}" class="form-control price-input">
-                        </td>
-                        <td>
-                            <input type="text" name="cinema_details[${index}][weekend_price]" 
-                                value="${formatRupiah(detail.weekend_price)}" class="form-control price-input">
-                        </td>
-                        <td>
-                            <input type="text" name="cinema_details[${index}][holiday_price]" 
-                                value="${formatRupiah(detail.holiday_price)}" class="form-control price-input">
-                        </td>
-                    </tr>
-                `);
+                            <tr>
+                                <td>
+                                    <input type="number" name="cinema_details[${index}][studio_number]" 
+                                        value="${detail.studio_number}" class="form-control">
+                                        <input type="hidden" name="cinema_details[${index}][detail_id]" 
+                                        value="${detail.id}" class="form-control">
+                                </td>
+                                <td>
+                                    <input type="text" name="cinema_details[${index}][normal_price]" 
+                                        value="${formatRupiah(detail.normal_price)}" class="form-control format-rupiah">
+                                </td>
+                                <td>
+                                    <input type="text" name="cinema_details[${index}][holiday_price]" 
+                                        value="${formatRupiah(detail.holiday_price)}" class="form-control format-rupiah">
+                                </td>
+                            </tr>
+                        `);
+                        $('.format-rupiah').on('input', function() {
+                            let value = $(this).val().replace(/\D/g, ''); // Hapus non-digit
+                            $(this).val(formatRupiah(value));
+                        });
                     });
 
                     // Sembunyikan loading modal dan tampilkan modal edit
@@ -438,13 +437,13 @@
                     $('#modal-loading').modal('hide');
                 }
             });
+
+            function formatRupiah(angka) {
+                return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
         });
 
         // Fungsi untuk format angka ke format rupiah
-        function formatRupiah(angka) {
-            return new Intl.NumberFormat('id-ID').format(angka);
-        }
-
 
         $(document).on("click", '.btn-delete', function() {
             let id = $(this).attr("data-id");
@@ -474,7 +473,6 @@
                         <input type="hidden" name="cinema_details[${i}][studio_number]" value="${i}" class="form-control" readonly>
                         <input type="text" name="cinema_details[${i}][normal_price]" class="form-control format-rupiah" required>
                         </td>
-                        <td><input type="text" name="cinema_details[${i}][weekend_price]" class="form-control format-rupiah" required></td>
                         <td><input type="text" name="cinema_details[${i}][holiday_price]" class="form-control format-rupiah" required></td>
                     </tr>
                 `);
@@ -492,13 +490,14 @@
 </script>
 <script>
     $(document).ready(function() {
-        
+
     });
+
     $("#btn-preview").click(function() {
         let fileInput = $("#import-file")[0];
-        let kotaOptions = {!! json_encode($location->flatMap->City) !!};
-        let provinsiOptions = {!! json_encode($location) !!};
-        let cinemaBrandOptions = {!! json_encode($cinema_type) !!};
+        let kotaOptions = "{{json_encode($location->flatMap->City)}}";
+        let provinsiOptions = "{{json_encode($location)}}";
+        let cinemaBrandOptions = "{{json_encode($cinema_type)}}";
         if (!fileInput || !fileInput.files.length) {
             alert("Pilih file terlebih dahulu!");
             return;
@@ -506,9 +505,16 @@
 
         let formData = new FormData();
         formData.append("file", fileInput.files[0]);
-
+        let loadingToast = Swal.fire({
+            title: "Processing...",
+            text: "Mohon tunggu sebentar",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         $.ajax({
-            url: "cinema/preview",
+            url: "{{ route('cinema.preview') }}",
             type: "POST",
             data: formData,
             headers: {
@@ -517,8 +523,7 @@
             processData: false, // Tambahkan ini
             contentType: false, // Tambahkan ini
             success: function(response) {
-                console.log("Response dari server:", response);
-
+                Swal.close();
                 if (response.success) {
                     let tableBody = $("#preview-table tbody");
                     tableBody.empty();
@@ -549,24 +554,80 @@
                         tableBody.append(`
                         <tr>
                             <td>${row.name}</td>
-                            <td>${row.city_code === "Tidak Ditemukan" ? citySelect: row.city_code}</td>
                             <td>${row.province_code === "Tidak Ditemukan" ? provinceSelect : row.province_code}</td>
+                            <td>${row.city_code === "Tidak Ditemukan" ? citySelect: row.city_code}</td>
                             <td>${row.cinema_type === "Tidak Ditemukan" ? cinemaBrandSelect : row.cinema_type}</td>
                             <td>${row.studio_number}</td>
                             <td>${row.normal_price}</td>
                             <td>${row.holiday_price}</td>
-                            <td>${row.weekend_price}</td>
                         </tr>
                         `);
                     });
 
                     $("#btn-import-confirm").show();
                 }
+            },
+            error: function(xhr) {
+                Swal.close();
+                let errorMsg = xhr.responseJSON?.message || "Terjadi kesalahan saat memproses data!";
+                Toastify({
+                    text: errorMsg,
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "#ff4d4d",
+                }).showToast();
             }
-
         });
 
 
+    });
+
+    $("#btn-import-confirm").click(function() {
+        let cinemaData = [];
+
+        $("#preview-table tbody tr").each(function() {
+            let row = $(this).find("td");
+
+            let cinema = {
+                name: row.eq(0).text().trim(),
+                province_code: row.eq(1).find("select").length ? row.eq(1).find("select").val() : row.eq(1).text().trim(),
+                city_code: row.eq(2).find("select").length ? row.eq(2).find("select").val() : row.eq(2).text().trim(),
+                cinema_type: row.eq(3).find("select").length ? row.eq(4).find("select").val() : row.eq(3).text().trim(),
+
+                //detail
+                total_studio: row.eq(4).text().trim(),
+                normal_price: row.eq(5).text().trim(),
+                holiday_price: row.eq(6).text().trim(),
+            };
+
+            cinemaData.push(cinema);
+        });
+
+        // Kirim data ke controller pakai AJAX
+        $.ajax({
+            url: "{{ route('cinema.import') }}",
+            method: "POST",
+            data: {
+                cinemas: cinemaData
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire("Sukses!", response.message, "success");
+                    reload();
+                } else {
+                    Swal.fire("Error!", response.message, "error");
+                    reload();
+                }
+            },
+            error: function() {
+                Swal.fire("Error!", "Terjadi kesalahan saat mengimport data.", "error");
+                reload();
+            }
+        });
     });
 </script>
 @endsection

@@ -11,5 +11,5 @@ class CinemaDetail extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'cinema_detail';
-    protected $fillable = ['cinema_id', 'studio_number', 'normal_price', 'weekend_price', 'holiday_price'];
+    protected $fillable = ['cinema_id', 'studio_number', 'normal_price', 'holiday_price'];
 }

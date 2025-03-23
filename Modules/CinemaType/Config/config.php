@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'name' => 'CinemaType'
+    'name' => 'Cinema Brands'
 ];

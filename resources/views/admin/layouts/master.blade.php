@@ -104,6 +104,19 @@
                 width: '100%',
                 placeholder: "Choose an Option"
             });
+
+            function reload() {
+                window.location.reload(true);
+            }
+
+            $('.format-rupiah').on('input', function() {
+                let value = $(this).val().replace(/\D/g, ''); // Hapus non-digit
+                $(this).val(formatRupiah(value));
+            });
+
+            function formatRupiah(angka) {
+                return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
         });
     </script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

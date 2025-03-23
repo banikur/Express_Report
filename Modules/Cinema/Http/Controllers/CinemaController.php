@@ -44,7 +44,6 @@ class CinemaController extends Controller
             return back()->withErrors($validator)
                 ->withInput();
         }
-        //dd($request->all());
         try {
             $cinema = Cinema::create([
                 'name'      => $request->name,
@@ -57,7 +56,6 @@ class CinemaController extends Controller
                     'cinema_id' => $cinema->id,
                     'studio_number' => $detail['studio_number'],
                     'normal_price' => str_replace(',', '', $detail['normal_price']),
-                    'weekend_price' =>  str_replace(',', '', $detail['weekend_price']),
                     'holiday_price' =>  str_replace(',', '', $detail['holiday_price'])
                 ]);
             }
@@ -71,6 +69,7 @@ class CinemaController extends Controller
     public function show(Request $request)
     {
         $cinema = Cinema::with('details')->find($request->id);
+        $cinema->total_studio = $cinema->details->count();
         return response()->json([
             'status'    => Response::HTTP_OK,
             'message'   => 'Data cinema by id',
@@ -87,11 +86,24 @@ class CinemaController extends Controller
             return back()->withErrors($validator)
                 ->withInput();
         }
+        
         try {
             $cinema = Cinema::find($request->id);
             $cinema->update([
-                'name'  => $request->name
+                'name'      => $request->name,
+                'province_code'      => substr($request->id_location, 0, 2),
+                'city_code'      => substr($request->id_location, -2),
+                'cinema_type_id'      => $request->cinema_type,
             ]);
+            foreach ($request->cinema_details as $detail) {
+                $cinemaDetail = CinemaDetail::find($detail['detail_id']);
+                $cinemaDetail->update([
+                    'studio_number' => $detail['studio_number'],
+                    'normal_price' => str_replace(',', '', $detail['normal_price']),
+                    'holiday_price' =>  str_replace(',', '', $detail['holiday_price'])
+                ]);
+               
+            }
             Alert::success('Pemberitahuan', 'Data <b>' . $cinema->name . '</b> berhasil disimpan')->toToast()->toHtml();
         } catch (\Throwable $th) {
             Alert::error('Pemberitahuan', 'Data <b>' . $cinema->name . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
@@ -140,7 +152,6 @@ class CinemaController extends Controller
                     'studio_number' => $row['F'],
                     'normal_price'  => number_format(str_replace(',', '', $row['G']), 0, ',', '.'),
                     'holiday_price' => number_format(str_replace(',', '', $row['H']), 0, ',', '.'),
-                    'weekend_price' => number_format(str_replace(',', '', $row['I']), 0, ',', '.'),
                 ];
             }
             $names = array_column($data, 'name');
@@ -152,6 +163,39 @@ class CinemaController extends Controller
             return response()->json(['success' => true, 'data' => $uniqueData]);
         } catch (\Throwable $th) {
             return response()->json(['error' => 'Terjadi kesalahan: ' . $th->getMessage()], 500);
+        }
+    }
+
+
+    public function import(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $cinemaData = $request->cinemas;
+            foreach ($cinemaData as $data) {
+                $cinema = Cinema::create([
+                    'name'          => $data['name'],
+                    'province_code' => $data['province_code'],
+                    'city_code'     => $data['city_code'],
+                    'cinema_type_id' => $data['cinema_type'],
+                ]);
+                if (!empty($data['total_studio'])) {
+                    for ($c = 0; $c < (int) $data['total_studio']; $c++) {
+                        CinemaDetail::create([
+                            'cinema_id' => $cinema->id,
+                            'studio_number' => $c + 1,
+                            'normal_price' => str_replace(',', '', $data['normal_price']),
+                            'holiday_price' =>  str_replace(',', '', $data['holiday_price'])
+                        ]);
+                    }
+                }
+            }
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Berhasil import: ' . count($cinemaData) . ' Data']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Gagal import: ' . $e->getMessage()]);
         }
     }
 
