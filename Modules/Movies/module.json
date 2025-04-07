@@ -1,0 +1,23 @@
+{
+    "name": "Movies",
+    "label": "Movies",
+    "alias": "movies",
+    "description": "manage all movies",
+    "keywords": ["movies"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Movies\\Providers\\MoviesServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": [],
+    "menus": [
+        {
+            "icon": "fas fa-circle",
+            "name": "Movies",
+            "route": "movies.index",
+            "permission": "read movies"
+        }
+    ],
+    "permissions": ["movies"]
+}

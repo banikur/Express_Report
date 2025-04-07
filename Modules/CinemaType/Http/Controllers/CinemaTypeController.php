@@ -8,9 +8,14 @@ use Illuminate\Routing\Controller;
 use Modules\CinemaType\Models\CinemaType;
 use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\HttpFoundation\Response;
+use Spatie\Activitylog\Models\Activity;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class CinemaTypeController extends Controller
 {
+    protected static $logAttributes = ['title', 'content'];
+    protected static $logName = 'post';
+
     public function index()
     {
         $x['title']     = "Cinema Type";
